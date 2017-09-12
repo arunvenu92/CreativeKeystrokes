@@ -1,4 +1,4 @@
-package com.system.puchisoftware;
+package com.system.insectsoftware;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,7 +11,6 @@ import java.util.Set;
 public class Search 
 {
 	private static ArrayList<String> recurselistOfpath = new ArrayList<String>();
-
 	public static void main(String args[])
 	{
 		try
@@ -19,6 +18,7 @@ public class Search
 			String filePath = null;
 			String searchKeyword = null;
 			String fileExtensions = null;
+			String extension =null;
 			FileReader filereaderObject = null;
 			BufferedReader bw = null;
 			Map<Integer,String> mapUtil = new HashMap<Integer,String>();
@@ -49,8 +49,21 @@ public class Search
 
 				if(fileObject.isFile())
 				{
-					String extension = fileObject.getAbsoluteFile().getName().substring(fileObject.getAbsoluteFile().getName().lastIndexOf("."),fileObject.getAbsoluteFile().getName().length());
-
+					
+					try
+					{
+						extension = fileObject.getAbsoluteFile().getName().substring(fileObject.getAbsoluteFile().getName().lastIndexOf("."),fileObject.getAbsoluteFile().getName().length());
+					}
+					catch(ArrayIndexOutOfBoundsException e)
+					{
+						System.out.println("No Extension or Invalid extension for the filepath");
+						continue;
+					}
+					catch(StringIndexOutOfBoundsException e)
+					{
+						System.out.println("No Extension or Invalid extension for the filepath");
+						continue;
+					}
 					for (String string : seperateExtensions) 
 					{
 						if(extension.equalsIgnoreCase(string))
@@ -90,19 +103,17 @@ public class Search
 				}
 
 			}
-
-
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
+	
 	public static void getRecursePath(String filePath)
 	{
 		File fileDirectoryAndFiles = new File(filePath);
 		File[] fileArray = fileDirectoryAndFiles.listFiles();
-
 		for (File file2 : fileArray) 
 		{
 			if(file2.isDirectory())
